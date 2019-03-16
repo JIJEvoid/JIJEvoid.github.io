@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>JIJE</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<style>
+			body {
+                font-family:PingFangSC-Semibold;
+				color: #B7B7B7;
+				margin: 0px;
+                background-color: #F0F2F5;
+			}
+
+
+
+            .head{
+                width: 100%;
+                height: 56px;
+                background-color: #F0F2F5;
+            }
+
+
+            .body{
+                width: 1200px;
+                height: 100%;
+                margin: 0 auto;
+                background-color: #F0F2F5;
+            }
+
+
+		</style>
+	</head>
+
+	<body>
+
+
+        <div id="app">
+            <div id="head" class="head">
+                <div class="body">
+
+                </div>
+            </div>
+
+            <div class="body">
+
+                <div id="threeContainer"></div>
+
+                <div id="info" style="margin-top: 8px;width:100%;height:120px;background-color: #F0F2F5">
+                    1
+                </div>
+
+                <div style="margin-top: 4px;width:100%;height:184px;background-color: #F0F2F5">
+                    2
+                </div>
+
+                <div style="margin-top: 60px;width:100%;height:43px;background-color: #F0F2F5;text-align: center">
+                    <span style="width:505px;height:43px;font-size:32px;font-family:SFProDisplay-Regular;font-weight:400;color:rgba(25,25,25,1);line-height:43px;">
+                        What tools can we use to create?
+                    </span>
+                </div>
+
+                <div style="margin-top: 27px;width:100%;height:246px;background-color: #F0F2F5;">
+                    4
+                </div>
+
+                <div style="margin-top: 10px;margin-bottom: 17px;height: 17px;width: 100%;background-color: #F0F2F5;text-align: center;font-size:12px;font-family:PingFangSC-Regular;font-weight:400;color:rgba(183,183,183,1);line-height:17px;">
+                    京ICP备00000000号-0 Copyright&#169 2019 JIJE STUDIO E-mail 007@banyding.com TEL：+86 13311170005
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+
+
+
+
+
+		<script src="js/three.min.js"></script>
+
+		<script src="js/inflate.min.js"></script>
+		<script src="js/FBXLoader.js"></script>
+
+		<script src="js/OrbitControls.js"></script>
+
+		<script src="js/WebGL.js"></script>
+		<script src="js/stats.min.js"></script>
+
+		<script>
+
+			if ( WEBGL.isWebGLAvailable() === false ) {
+				document.body.appendChild( WEBGL.getWebGLErrorMessage() );
+			}
+
+			var container, controls;
+			var camera, scene, renderer, light;
+            var windowHalfX = 1200 / 2;
+            var windowHalfY = 576 / 2;
+			var clock = new THREE.Clock();
+
+			var mixers = [];
+
+			init();
+
+			function init() {
+
+				container = document.getElementById('threeContainer');
+
+				camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 2000 );
+				camera.position.set( 16.448208202154994, 129.58800343108675, 234.9023657094516 );
+                camera.lookAt(0,0,0);
+
+                /*controls = new THREE.OrbitControls( camera );
+                controls.target.set( 0, 0, 0 );
+                controls.update();*/
+
+                scene = new THREE.Scene();
+				scene.background = new THREE.Color( 0xffffff );
+				scene.fog = new THREE.Fog( 0xa0a0a0, 200, 1000 );
+
+				light = new THREE.HemisphereLight( 0xffffff, 0x444444 );
+				light.position.set( 0, 200, 0 );
+				scene.add( light );
+				scene.add( camera );
+
+				light = new THREE.DirectionalLight( 0xffffff );
+				light.position.set( 0, 200, 100 );
+				light.castShadow = true;
+				light.shadow.camera.top = 180;
+				light.shadow.camera.bottom = -100;
+				light.shadow.camera.left = -120;
+				light.shadow.camera.right = 120;
+				scene.add( light );
+
+				// model
+				var loader = new THREE.FBXLoader();
+				loader.load( 'jije/TEST2.fbx', function ( object ) {
+					console.log(object);
+					object.mixer = new THREE.AnimationMixer( object );
+					mixers.push( object.mixer );
+
+					var action = object.mixer.clipAction( object.animations[ 0 ] );
+
+					action._interpolants.splice(0,2);
+
+					action.play();
+
+					object.rotation.x = -0.2;
+					object.rotation.y = 0.8;
+					object.rotation.z = 0;
+                    object.scale.x=object.scale.y=object.scale.z = 4;
+					object.traverse( function ( child ) {
+
+						if ( child.isMesh ) {
+
+							child.castShadow = true;
+							child.receiveShadow = true;
+						}
+					});
+					window.thing = object;
+					scene.add( object );
+                    document.getElementById('threeContainer').addEventListener( 'mousemove', onDocumentMouseMove, false );
+                    document.getElementById('threeContainer').addEventListener( 'mouseout', onDocumentMouseOut, false );
+
+                    animate();
+				});
+
+				renderer = new THREE.WebGLRenderer( { antialias: true } );
+				renderer.setPixelRatio( window.devicePixelRatio );
+				renderer.setSize( 1200, 576 );
+				renderer.shadowMap.enabled = true;
+				container.appendChild( renderer.domElement );
+
+			}
+
+			var mouseX=0,mouseY=0;
+
+            function onDocumentMouseMove( event ) {
+                console.log(event.clientX);
+                console.log(event.clientX);
+                mouseX = ( event.offsetX - windowHalfX );
+                mouseY = ( event.offsetY - windowHalfY );
+            }
+
+            function onDocumentMouseOut() {
+                console.log('移出')
+                mouseX = camera.position.x;
+                mouseY = -camera.position.y;
+            }
+
+            function animate() {
+
+				requestAnimationFrame( animate );
+
+                camera.position.x +=( mouseX - camera.position.x ) * 0.00015;
+                camera.position.y += ( - mouseY - camera.position.y ) * 0.00015;
+
+				if ( mixers.length > 0 ) {
+					for ( var i = 0; i < mixers.length; i ++ ) {
+						mixers[ i ].update( clock.getDelta() );
+					}
+				}
+				renderer.render( scene, camera );
+			}
+
+		</script>
+
+	</body>
+</html>
