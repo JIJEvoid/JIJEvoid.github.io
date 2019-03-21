@@ -16,6 +16,7 @@
             display: flex;
             justify-content: center;
             min-height: 100vh;
+            margin: 0;
         }
 
         :root {
@@ -252,6 +253,11 @@
             transform: translate3d(0, 0, calc(var(--depth) * 0.9px));
         }
 
+        .open{
+            -webkit-transform: translate3d(0, 0, calc(var(--depth) * 0.9px));
+            transform: translate3d(0, 0, calc(var(--depth) * 0.9px));
+        }
+
         .chest-drawer__panel {
             height: 100%;
             position: absolute;
@@ -358,25 +364,25 @@
             <div class="chest-drawer__panel chest-drawer__panel--left"></div>
             <div class="chest-drawer__panel chest-drawer__panel--right"></div>
             <div class="chest-drawer__panel chest-drawer__panel--bottom"></div>
-            <div class="chest-drawer__panel chest-drawer__panel--back">CSS</div>
+            <div class="chest-drawer__panel chest-drawer__panel--back">art</div>
         </div>
     </div>
-    <div class="chest-drawer chest-drawer--middle">
+    <div class="chest-drawer chest-drawer&#45;&#45;middle">
         <details>
             <summary></summary>
         </details>
         <div class="chest-drawer__structure">
-            <div class="chest-drawer__panel chest-drawer__panel--left"></div>
-            <div class="chest-drawer__panel chest-drawer__panel--right"></div>
-            <div class="chest-drawer__panel chest-drawer__panel--bottom"></div>
-            <div class="chest-drawer__panel chest-drawer__panel--back">is</div>
+            <div class="chest-drawer__panel chest-drawer__panel&#45;&#45;left"></div>
+            <div class="chest-drawer__panel chest-drawer__panel&#45;&#45;right"></div>
+            <div class="chest-drawer__panel chest-drawer__panel&#45;&#45;bottom"></div>
+            <div class="chest-drawer__panel chest-drawer__panel&#45;&#45;back">code</div>
         </div>
     </div>
     <div class="chest-drawer chest-drawer--bottom">
-        <details open="">
+        <details id="b1">
             <summary></summary>
         </details>
-        <div class="chest-drawer__structure">
+        <div class="chest-drawer__structure" id="b2">
             <div class="chest-drawer__panel chest-drawer__panel--left"></div>
             <div class="chest-drawer__panel chest-drawer__panel--right"></div>
             <div class="chest-drawer__panel chest-drawer__panel--bottom"></div>
@@ -385,6 +391,29 @@
     </div>
 </div>
 
+<script>
+    function $(item) {
+        var q=document.querySelectorAll(item);
+        if(q.length==0){
+            return ''
+        }else{
+            return q[0]
+        }
+    }
+
+    $(`#b1`).onclick=function () {
+        $(`#b1`).className = $(`#b1`).className=='open'?'':'open';
+        $(`#b2`).className = $(`#b2`).className=='open'?'':'open';
+
+        console.log($(`#b1`).className)
+    }
+
+
+    $(`body > div > div.chest-drawer.chest-drawer--top > details`).onclick=function () {
+        $(`body > div > div.chest-drawer.chest-drawer--top > details`).className = 'open';
+    }
+
+</script>
 
 </body>
 </html>
