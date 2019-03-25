@@ -256,6 +256,10 @@
         .open{
             -webkit-transform: translate3d(0, 0, calc(var(--depth) * 0.9px));
             transform: translate3d(0, 0, calc(var(--depth) * 0.9px));
+<<<<<<< HEAD
+=======
+
+>>>>>>> 282f2dd63faea4b6f8feccd6a82bcd5f4aca78e1
         }
 
         .chest-drawer__panel {
@@ -379,7 +383,11 @@
         </div>
     </div>
     <div class="chest-drawer chest-drawer--bottom">
+<<<<<<< HEAD
         <details id="b1">
+=======
+        <details>
+>>>>>>> 282f2dd63faea4b6f8feccd6a82bcd5f4aca78e1
             <summary></summary>
         </details>
         <div class="chest-drawer__structure" id="b2">
@@ -401,11 +409,16 @@
         }
     }
 
+<<<<<<< HEAD
     $(`#b1`).onclick=function () {
         $(`#b1`).className = $(`#b1`).className=='open'?'':'open';
         $(`#b2`).className = $(`#b2`).className=='open'?'':'open';
 
         console.log($(`#b1`).className)
+=======
+    $(`body > div > div.chest-drawer.chest-drawer--top > details`).onclick=function () {
+        $(`body > div > div.chest-drawer.chest-drawer--top > details`).className = 'open';
+>>>>>>> 282f2dd63faea4b6f8feccd6a82bcd5f4aca78e1
     }
 
 
